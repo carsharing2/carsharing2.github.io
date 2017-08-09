@@ -1,0 +1,58 @@
+<style type="text/css">
+   .oppost { 
+    background:#66A5AD;
+    padding: 10px;
+    padding-left: 40px; 
+    border: solid 1px black; 
+    margin-left: 20px;
+    margin-bottom: 10px;
+   }
+
+    .post { 
+    background:#C4DEF6;
+    padding: 5px;
+    padding-left: 20px; 
+    border: solid 1px black; 
+    margin: 3px 500px 3px 100px;
+   }
+</style>  
+
+<p>Welcome</p>
+
+{% if message %}<h3>{{ message }}</h3> {% endif %}
+
+{% for post in posts %}
+<div class="oppost">
+    {% if post.op.mail %}
+        {{ post.op.mail}} <br />
+    {% endif %}
+
+    {% if post.op.sage %}
+        SAGE <br />
+    {% endif %}
+    <b>#{{ post.op.post_id}} </b> {{ post.op.date }} {{ post.op.ip }}<br />
+    {{ post.op.message }}<br />
+    <p><a href="{% url 'thread' thread_id=post.op.post_id %}">Go to thread</a></p>
+</div>
+
+    {% for t_box in post.related_posts %}
+    <div class="post">
+        {{ t_box.message }}
+    </div>
+    {% endfor %}   
+{% endfor %}
+
+{% for p in pages %}
+    <a href="{% url 'index_page' page=p %}">[{{ p }}] </a>
+{% endfor %}    
+
+<div align = "center">
+    <h3>Создать тред</h3>
+    <form action="{% url 'create' %}" method="post">
+        {% csrf_token %}
+        <input placeholder = "Email" name = "mail" size = 30> <br />
+        <textarea name = "message" rows = 10 cols = 50 placeholder = "Ваше сообщение"></textarea><br />
+        <input type = "checkbox" name = "sage" value="sage"> Sage
+        <input type = "submit" value="Отправить" />
+    </form>
+</div>

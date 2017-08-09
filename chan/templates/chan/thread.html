@@ -1,0 +1,54 @@
+<style type="text/css">
+   .oppost { 
+    background:#66A5AD;
+    padding: 10px;
+    padding-left: 40px; 
+    border: solid 1px black; 
+    margin-left: 20px;
+   }
+
+    .post { 
+    background:#C4DEF6;
+    padding: 5px;
+    padding-left: 20px; 
+    border: solid 1px black; 
+    margin: 5px 500px 0px 20px;
+
+   }
+</style> 
+{% load tz %}
+
+{% if message %}
+    {{ message }}
+{% endif %}
+<div class = "oppost">
+    <b>#{{ op_post.post_id}} </b> {{ op_post.date|date:"d.m.Y G:i:s" }} {{ op_post.ip }}<br />
+    {{ op_post.message }}
+</div>
+<hr />
+
+
+{% for post in posts %}
+<div class = "post">
+    {% if post.mail %}
+        {{ post.mail}}<br /> 
+    {% endif %}
+    {% if post.sage %}
+        SAGE<br /> 
+    {% endif %}   
+    <b>#{{ post.post_id}} </b> {{ post.date|date:"d.m.Y G:i:s" }} {{ post.ip }}<br />
+    {{ post.message }}
+</div>
+{% endfor %}
+<p><a href="{% url 'index'%}">Back</a></p>
+
+<div align = "center">
+    <h3>Ответить в тред</h3>
+    <form action="{% url 'create_thread' thread_id=op_post.post_id %}" method="post">
+        {% csrf_token %}
+        <input placeholder = "Email" name = "mail" size = 30> <br />
+        <textarea name = "message" rows = 10 cols = 50 placeholder = "Ваше сообщение"></textarea><br />
+        <input type = "checkbox" name = "sage" value="sage"> Sage
+        <input type = "submit" value="Отправить" />
+    </form>
+</div>

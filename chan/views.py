@@ -21,7 +21,7 @@ def index(request, page=0):
         except AttributeError: #no posts in thread
             p.last_post_id = p.post_id
 
-    posts = sorted(list(posts), key = lambda p: p.last_post_id, reverse=True) #sort threads py last post id
+    posts = sorted(list(posts), key = lambda p: p.last_post_id, reverse = True) #sort threads py last post id
 
     data = []
     for p in posts[page*t_on_page:page*t_on_page + t_on_page]:

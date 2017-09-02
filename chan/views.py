@@ -38,7 +38,7 @@ def index(request, page=0):
     return render(request, 'chan/index.html', {'posts': data, 'pages': pages_total, 'message': message})
     
 def create(request, thread_id=None):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR') #get ip func
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
     else:

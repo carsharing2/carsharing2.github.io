@@ -5,6 +5,7 @@ from .models import Post, Users_base
 from math import ceil
 import datetime
 
+
 def index(request, page=0):
     t_on_page = 3
     page = int(page)
@@ -44,8 +45,7 @@ def create(request, thread_id=None):
     else:
         ip = request.META.get('REMOTE_ADDR')
 
-    sage = True if 'sage' in request.POST else False
-
+    #sage = True if 'sage' in request.POST else False
 
     try: 
         user = Users_base.objects.get(ip=ip)
@@ -75,7 +75,7 @@ def create(request, thread_id=None):
             message = request.POST['message'],
             mail = request.POST['mail'],
             date = timezone.now(),
-            sage = sage, 
+            sage = request.POST['sage'], #Need to bool() probably
             ip = ip,
             parent_thread = thread_id,
             )
@@ -86,8 +86,8 @@ def create(request, thread_id=None):
         threads = Post.objects.filter(parent_thread = None)
         if threads.count() > 10: #Maximum number of threads on the board.
             last_thread_id = threads.order_by('post_id').first().post_id
-            threads.order_by('post_id').first().delete() #delete last thread
-            Post.objects.filter(parent_thread = last_thread_id).delete() #delete posts in last thread
+            threads.order_by('post_id').first().delete() #Delete last thread
+            Post.objects.filter(parent_thread = last_thread_id).delete() #Delete posts in last thread
     
     
     ajax_data = {'message': message}

@@ -19,7 +19,7 @@
     {{ message }}
 {% endif %}
 <div class = "oppost">
-    <b>#{{ op_post.post_id}} </b> {{ op_post.date|date:"d.m.Y G:i:s" }} {{ op_post.ip }}<br />
+    <b>#{{ op_post.post_id }} </b> {{ op_post.date|date:"d.m.Y G:i:s" }} {{ op_post.ip }}<br />
     {{ op_post.message }}
 </div>
 <hr />
@@ -41,12 +41,12 @@
 
 <div align = "center">
     <h3>Post in thread</h3>
-    <form action="{% url 'create_post' thread_id=op_post.post_id %}" method="post">
+    <form method="post">
         {% csrf_token %}
-        <input placeholder = "Email" name = "mail" size = 30> <br />
-        <textarea name = "message" rows = 10 cols = 50 placeholder = "Your message"></textarea><br />
+        <input placeholder = "Email" name = "mail" size = 30> <br>
+        <textarea name = "message" rows = 10 cols = 50 placeholder = "Your message"></textarea><br>
         <input type = "checkbox" name = "sage" value="sage"> Sage
-        <input type = "submit" value="Send" />
+        <input type = "submit" value="Send" onclick="sendPost('{{ csrf_token }}');">
     </form>
 </div>
     

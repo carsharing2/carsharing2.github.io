@@ -31,12 +31,7 @@ def index(request, page=0):
             'related_posts': Post.objects.filter(parent_thread = p.post_id).order_by('-post_id')[:3:-1],
             })
 
-    try:
-        message = request.session.pop('message')
-    except KeyError:
-        message = None
-
-    return render(request, 'chan/index.html', {'posts': data, 'pages': pages_total, 'message': message})
+    return render(request, 'chan/index.html', {'posts': data, 'pages': pages_total})
     
 def create(request):
     thread_id = int(request.POST['thread_id'])
@@ -62,7 +57,7 @@ def create(request):
     if user.is_banned():
         allow_post = False
         message = 'Ban: {}; expires: {}'.format(user.ban_reason, user.ban_expire.ctime())
-    elif (timezone.now() - user.last_post_date < datetime.timedelta(seconds = 5)) and not new_user:
+    elif (timezone.now() - user.last_post_date < datetime.timedelta(seconds = 15)) and not new_user:
         allow_post = False
         message = 'You post too fast'
     else:
@@ -84,7 +79,6 @@ def create(request):
 
     
     if thread_id == -1: #If user created new thread.
-        print('TRUEEREREMRMMERM')
         threads = Post.objects.filter(parent_thread = None)
         if threads.count() > 10: #Maximum number of threads on the board.
             last_thread_id = threads.order_by('post_id').first().post_id

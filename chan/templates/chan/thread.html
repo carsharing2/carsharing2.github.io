@@ -15,9 +15,7 @@
 
 {% load tz %}
 
-{% if message %}
-    {{ message }}
-{% endif %}
+<div class="popup"></div>
 <div class = "oppost">
     <b>#{{ op_post.post_id }} </b> {{ op_post.date|date:"d.m.Y G:i:s" }} {{ op_post.ip }}<br />
     {{ op_post.message }}

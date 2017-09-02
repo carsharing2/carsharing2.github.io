@@ -1,3 +1,9 @@
+function popup(text){
+    $('.popup').text(text);
+    setTimeout ("$('.popup').show('drop');", 1);
+    setTimeout ("$('.popup').hide('drop');", 2500);
+}
+
 function sendPost(threadId, token){   
     $.ajax({
         url : '/createpost/',
@@ -16,7 +22,7 @@ function sendPost(threadId, token){
             thread_id: threadId,
         },
         success : function(data){
-            alert( data['message'] );
+            popup(data['message']);
         },
     });
 };

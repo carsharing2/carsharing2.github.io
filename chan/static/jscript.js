@@ -1,7 +1,6 @@
-function sendPost(token){
-    
+function sendPost(threadId, token){   
     $.ajax({
-        url : 'createpost/',
+        url : '/createpost/',
         type : 'POST',
         data : {
             message: function() { return $("textarea[name=message]").val(); },
@@ -14,9 +13,12 @@ function sendPost(token){
                 } 
             },
             csrfmiddlewaretoken: token,
+            thread_id: threadId,
         },
-        success: function(data){
+        success : function(data){
             alert( data['message'] );
         },
     });
 };
+
+$("input[type='submit']").click(function() { return false; }); //disable page reload

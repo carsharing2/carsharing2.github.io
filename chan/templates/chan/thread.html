@@ -41,12 +41,12 @@
 
 <div align = "center">
     <h3>Post in thread</h3>
-    <form method="post">
+    <form method="post" action="javascript:void(0);" >
         {% csrf_token %}
         <input placeholder = "Email" name = "mail" size = 30> <br>
         <textarea name = "message" rows = 10 cols = 50 placeholder = "Your message"></textarea><br>
         <input type = "checkbox" name = "sage" value="sage"> Sage
-        <input type = "submit" value="Send" onclick="sendPost('{{ csrf_token }}');">
+        <input type = "submit" value="Send" onclick="sendPost({{ op_post.post_id }} ,'{{ csrf_token }}');">
     </form>
 </div>
     

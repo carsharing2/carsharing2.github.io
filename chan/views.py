@@ -38,7 +38,8 @@ def index(request, page=0):
 
     return render(request, 'chan/index.html', {'posts': data, 'pages': pages_total, 'message': message})
     
-def create(request, thread_id=None):
+def create(request):
+    thread_id = int(request.POST['thread_id'])
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR') #get ip func
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
@@ -77,12 +78,13 @@ def create(request, thread_id=None):
             date = timezone.now(),
             sage = request.POST['sage'], #Need to bool() probably
             ip = ip,
-            parent_thread = thread_id,
+            parent_thread = thread_id if thread_id != -1 else None,
             )
         message = 'Post send'
 
     
-    if thread_id is None: #If user created new thread.
+    if thread_id == -1: #If user created new thread.
+        print('TRUEEREREMRMMERM')
         threads = Post.objects.filter(parent_thread = None)
         if threads.count() > 10: #Maximum number of threads on the board.
             last_thread_id = threads.order_by('post_id').first().post_id

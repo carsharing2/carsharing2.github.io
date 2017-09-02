@@ -1,21 +1,16 @@
-<style type="text/css">
-   .oppost { 
-    background:#66A5AD;
-    padding: 10px;
-    padding-left: 40px; 
-    border: solid 1px black; 
-    margin-left: 20px;
-    margin-bottom: 10px;
-   }
-
-    .post { 
-    background:#C4DEF6;
-    padding: 5px;
-    padding-left: 20px; 
-    border: solid 1px black; 
-    margin: 3px 500px 3px 100px;
-   }
-</style>  
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PyImBoard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{% static 'jscript.js' %}"></script>
+</head>
+<body>
 
 <p>Welcome</p>
 
@@ -47,12 +42,13 @@
 {% endfor %}    
 
 <div align = "center">
-    <h3>Создать тред</h3>
-    <form action="{% url 'create' %}" method="post">
+    <h3>Create your own thread</h3>
+    <form method="post" action="javascript:void(0);" >
         {% csrf_token %}
-        <input placeholder = "Email" name = "mail" size = 30> <br />
-        <textarea name = "message" rows = 10 cols = 50 placeholder = "Ваше сообщение"></textarea><br />
-        <input type = "checkbox" name = "sage" value="sage"> Sage
-        <input type = "submit" value="Отправить" />
+        <input placeholder = "Email" name = "mail" size = 30> <br>
+        <textarea name = "message" rows = 10 cols = 50 placeholder = "Your message"></textarea><br>
+        <input type = "submit" value="Send" onclick="sendPost(-1 ,'{{ csrf_token }}');">
     </form>
 </div>
+</body>
+</html>

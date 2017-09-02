@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from django.utils import timezone
 from .models import Post, Users_base
 from math import ceil
@@ -81,7 +81,6 @@ def create(request, thread_id=None):
             )
         message = 'Post send'
 
-    request.session['message'] = message
     
     if thread_id is None: #If user created new thread.
         threads = Post.objects.filter(parent_thread = None)
@@ -89,9 +88,10 @@ def create(request, thread_id=None):
             last_thread_id = threads.order_by('post_id').first().post_id
             threads.order_by('post_id').first().delete() #delete last thread
             Post.objects.filter(parent_thread = last_thread_id).delete() #delete posts in last thread
-        return redirect('index')
-    else:
-        return redirect('thread', thread_id = thread_id)
+    
+    
+    ajax_data = {'message': message}
+    return JsonResponse(ajax_data)
     
 
 def thread(request, thread_id):

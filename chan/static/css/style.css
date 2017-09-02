@@ -1,0 +1,15 @@
+.oppost { 
+    background:#66A5AD;
+    padding: 10px;
+    padding-left: 40px; 
+    border: solid 1px black; 
+    margin-left: 20px;
+}
+
+.post { 
+    background:#C4DEF6;
+    padding: 5px;
+    padding-left: 20px; 
+    border: solid 1px black; 
+    margin: 5px 500px 0px 20px;
+}

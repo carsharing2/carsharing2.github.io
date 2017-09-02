@@ -1,21 +1,18 @@
-<style type="text/css">
-   .oppost { 
-    background:#66A5AD;
-    padding: 10px;
-    padding-left: 40px; 
-    border: solid 1px black; 
-    margin-left: 20px;
-   }
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PyImBoard: {{ op_post.message|slice:":10" }}...</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{% static 'jscript.js' %}"></script>
+</head>
 
-    .post { 
-    background:#C4DEF6;
-    padding: 5px;
-    padding-left: 20px; 
-    border: solid 1px black; 
-    margin: 5px 500px 0px 20px;
+<body>
 
-   }
-</style> 
 {% load tz %}
 
 {% if message %}
@@ -43,12 +40,15 @@
 <p><a href="{% url 'index'%}">Back</a></p>
 
 <div align = "center">
-    <h3>Ответить в тред</h3>
-    <form action="{% url 'create_thread' thread_id=op_post.post_id %}" method="post">
+    <h3>Post in thread</h3>
+    <form action="{% url 'create_post' thread_id=op_post.post_id %}" method="post">
         {% csrf_token %}
         <input placeholder = "Email" name = "mail" size = 30> <br />
-        <textarea name = "message" rows = 10 cols = 50 placeholder = "Ваше сообщение"></textarea><br />
+        <textarea name = "message" rows = 10 cols = 50 placeholder = "Your message"></textarea><br />
         <input type = "checkbox" name = "sage" value="sage"> Sage
-        <input type = "submit" value="Отправить" />
+        <input type = "submit" value="Send" />
     </form>
 </div>
+    
+</body>
+</html>

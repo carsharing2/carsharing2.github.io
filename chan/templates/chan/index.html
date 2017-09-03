@@ -41,14 +41,21 @@
     <a href="{% url 'index_page' page=p %}">[{{ p }}] </a>
 {% endfor %}    
 
-<div align = "center">
-    <h3>Create your own thread</h3>
-    <form action="{% url 'create' %}" method="post">
-        {% csrf_token %}
-        <input placeholder = "Email" name = "mail" size = 30> <br>
-        <textarea name = "message" rows = 10 cols = 50 placeholder = "Your message"></textarea><br>
-        <input type = "submit" value="Send" onclick="sendPost(-1 ,'{{ csrf_token }}');">
-    </form>
+<div class="reply">
+    <div class="sendform">
+        <h3>Create your own thread</h3>
+        <form action="{% url 'create' %}" method="post">
+            {% csrf_token %}
+            <input placeholder = "Email" name = "mail" class ="mailfield">
+            <br>
+            <textarea name = "message" rows = 8 placeholder = "Your message" class="mfield"></textarea><br>
+            <div class="bbcodes">
+                bbcodes should be here
+            </div>
+            <input type = "submit" value="Send" class="sendbtn">
+        </form>
+    </div>
 </div>
+
 </body>
 </html>

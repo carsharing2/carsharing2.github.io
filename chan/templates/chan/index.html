@@ -43,7 +43,7 @@
 
 <div align = "center">
     <h3>Create your own thread</h3>
-    <form method="post" action="javascript:void(0);" >
+    <form action="{% url 'create' %}" method="post">
         {% csrf_token %}
         <input placeholder = "Email" name = "mail" size = 30> <br>
         <textarea name = "message" rows = 10 cols = 50 placeholder = "Your message"></textarea><br>

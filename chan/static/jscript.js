@@ -4,7 +4,7 @@ function popup(text){
     setTimeout ("$('.popup').hide('drop');", 2500);
 }
 
-function sendPost(threadId, token){   
+/*function sendPost(threadId, token){   
     $.ajax({
         url : '/createpost/',
         type : 'POST',
@@ -28,3 +28,4 @@ function sendPost(threadId, token){
 };
 
 $("input[type='submit']").click(function() { return false; }); //disable page reload
+*/

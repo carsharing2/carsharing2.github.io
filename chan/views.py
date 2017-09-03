@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, Http404, JsonResponse
+from django.http import HttpResponse, Http404
 from django.utils import timezone
 from .models import Post, Users_base
 from math import ceil
 import datetime
-
 
 def index(request, page=0):
     t_on_page = 3
@@ -31,17 +30,22 @@ def index(request, page=0):
             'related_posts': Post.objects.filter(parent_thread = p.post_id).order_by('-post_id')[:3:-1],
             })
 
-    return render(request, 'chan/index.html', {'posts': data, 'pages': pages_total})
+    try:
+        message = request.session.pop('message')
+    except KeyError:
+        message = None
+
+    return render(request, 'chan/index.html', {'posts': data, 'pages': pages_total, 'message': message})
     
-def create(request):
-    thread_id = int(request.POST['thread_id'])
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR') #get ip func
+def create(request, thread_id=None):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
     else:
         ip = request.META.get('REMOTE_ADDR')
 
-    #sage = True if 'sage' in request.POST else False
+    sage = True if 'sage' in request.POST else False
+
 
     try: 
         user = Users_base.objects.get(ip=ip)
@@ -57,7 +61,7 @@ def create(request):
     if user.is_banned():
         allow_post = False
         message = 'Ban: {}; expires: {}'.format(user.ban_reason, user.ban_expire.ctime())
-    elif (timezone.now() - user.last_post_date < datetime.timedelta(seconds = 15)) and not new_user:
+    elif (timezone.now() - user.last_post_date < datetime.timedelta(seconds = 5)) and not new_user:
         allow_post = False
         message = 'You post too fast'
     else:
@@ -71,23 +75,23 @@ def create(request):
             message = request.POST['message'],
             mail = request.POST['mail'],
             date = timezone.now(),
-            sage = request.POST['sage'], #Need to bool() probably
+            sage = sage, 
             ip = ip,
-            parent_thread = thread_id if thread_id != -1 else None,
+            parent_thread = thread_id,
             )
         message = 'Post send'
 
+    request.session['message'] = message
     
-    if thread_id == -1: #If user created new thread.
+    if thread_id is None: #If user created new thread.
         threads = Post.objects.filter(parent_thread = None)
         if threads.count() > 10: #Maximum number of threads on the board.
             last_thread_id = threads.order_by('post_id').first().post_id
-            threads.order_by('post_id').first().delete() #Delete last thread
-            Post.objects.filter(parent_thread = last_thread_id).delete() #Delete posts in last thread
-    
-    
-    ajax_data = {'message': message}
-    return JsonResponse(ajax_data)
+            threads.order_by('post_id').first().delete() #delete last thread
+            Post.objects.filter(parent_thread = last_thread_id).delete() #delete posts in last thread
+        return redirect('index')
+    else:
+        return redirect('thread', thread_id = thread_id)
     
 
 def thread(request, thread_id):

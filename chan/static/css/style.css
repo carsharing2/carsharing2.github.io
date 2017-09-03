@@ -1,3 +1,5 @@
+a {text-decoration: none; }
+
 .oppost { 
     background:#66A5AD;
     padding: 10px;
@@ -25,4 +27,40 @@
     background-color: white;
     padding: 5px;
     display: none;
+}
+
+.reply {
+    text-align: center;
+}
+
+.sendform {
+    display:inline-block;
+    width: 350px;
+}
+
+.mailfield {
+    float: left;
+    width: 290px;
+    margin-bottom: 10px;
+}
+
+.mfield {
+    width: 100%;
+}
+
+.sagebtn {
+    margin-left: 6px;
+}
+
+.sendbtn {
+    float: right;
+    padding: 2px 30px;
+    background-color: #2897A8;
+    color: black;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.bbcodes {
+    float: left;
 }

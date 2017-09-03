@@ -37,15 +37,21 @@
 {% endfor %}
 <p><a href="{% url 'index'%}">Back</a></p>
 
-<div align = "center">
-    <h3>Post in thread</h3>
-    <form method="post" action="javascript:void(0);" >
-        {% csrf_token %}
-        <input placeholder = "Email" name = "mail" size = 30> <br>
-        <textarea name = "message" rows = 10 cols = 50 placeholder = "Your message"></textarea><br>
-        <input type = "checkbox" name = "sage" value="sage"> Sage
-        <input type = "submit" value="Send" onclick="sendPost({{ op_post.post_id }} ,'{{ csrf_token }}');">
-    </form>
+<div class="reply">
+    <div class="sendform">
+        <h3>Post in thread</h3>
+        <form method="post" >
+            {% csrf_token %}
+            <input placeholder = "Email" name = "mail" class ="mailfield">
+            <input type = "checkbox" name = "sage" value="sage" class="sagebtn"> sage
+            <br>
+            <textarea name = "message" rows = 8 placeholder = "Your message" class="mfield"></textarea><br>
+            <div class="bbcodes">
+                bbcodes should be here
+            </div>
+            <a onclick="sendPost({{ op_post.post_id }} ,'{{ csrf_token }}');" href="#" class="sendbtn">Send</a>
+        </form>
+    </div>
 </div>
     
 </body>

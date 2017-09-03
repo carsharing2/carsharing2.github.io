@@ -30,12 +30,7 @@ def index(request, page=0):
             'related_posts': Post.objects.filter(parent_thread = p.post_id).order_by('-post_id')[:3:-1],
             })
 
-    try:
-        message = request.session.pop('message')
-    except KeyError:
-        message = None
-
-    return render(request, 'chan/index.html', {'posts': data, 'pages': pages_total, 'message': message})
+    return render(request, 'chan/index.html', {'posts': data, 'pages': pages_total})
     
 def create(request, thread_id=None):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -80,8 +75,6 @@ def create(request, thread_id=None):
             parent_thread = thread_id,
             )
         message = 'Post send'
-
-    request.session['message'] = message
     
     if thread_id is None: #If user created new thread.
         threads = Post.objects.filter(parent_thread = None)
@@ -89,16 +82,12 @@ def create(request, thread_id=None):
             last_thread_id = threads.order_by('post_id').first().post_id
             threads.order_by('post_id').first().delete() #delete last thread
             Post.objects.filter(parent_thread = last_thread_id).delete() #delete posts in last thread
-        return redirect('index')
-    else:
-        return redirect('thread', thread_id = thread_id)
+
+    
+    return render(request, 'chan/message.html', {'message': message})
     
 
 def thread(request, thread_id):
     op_post = get_object_or_404(Post, post_id = thread_id, parent_thread = None)
     posts = Post.objects.filter(parent_thread = (thread_id))
-    try:
-        message = request.session.pop('message')
-    except KeyError:
-        message = None
-    return render(request, 'chan/thread.html', {'op_post': op_post, 'posts': posts, 'message': message})
+    return render(request, 'chan/thread.html', {'op_post': op_post, 'posts': posts})

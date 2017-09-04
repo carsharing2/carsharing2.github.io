@@ -33,6 +33,7 @@
     {% endif %}   
     <b>#{{ post.post_id}} </b> {{ post.date|date:"d.m.Y G:i:s" }} {{ post.ip }}<br />
     {{ post.message }}
+    {{ post.file }}
 </div>
 {% endfor %}
 <p><a href="{% url 'index'%}">Back</a></p>

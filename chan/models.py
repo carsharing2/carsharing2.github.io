@@ -8,6 +8,7 @@ class Post(models.Model):
     parent_thread = models.PositiveIntegerField('Parent', blank = True, null = True)
     ip = models.CharField(max_length = 20, blank = True, null = True)
     post_id = models.IntegerField(primary_key = True)
+    file = models.FileField(upload_to='uploads/', blank=True, null=True)
 
     def __str__(self):
         return self.message

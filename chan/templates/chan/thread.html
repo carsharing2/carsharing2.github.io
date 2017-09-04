@@ -33,7 +33,10 @@
     {% endif %}   
     <b>#{{ post.post_id}} </b> {{ post.date|date:"d.m.Y G:i:s" }} {{ post.ip }}<br />
     {{ post.message }}
-    {{ post.file }}
+    {% if post.file %}
+        <img src="/{{ post.file }}" width="200" height="200">
+    {% endif %}
+
 </div>
 {% endfor %}
 <p><a href="{% url 'index'%}">Back</a></p>
@@ -41,14 +44,14 @@
 <div class="reply">
     <div class="sendform">
         <h3>Post in thread</h3>
-        <form action="{% url 'create_post' thread_id=op_post.post_id %}" method="post">
+        <form action="{% url 'create_post' thread_id=op_post.post_id %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input placeholder = "Email" name = "mail" class ="mailfield">
             <input type = "checkbox" name = "sage" value="sage" class="sagebtn"> sage
             <br>
             <textarea name = "message" rows = 8 placeholder = "Your message" class="mfield"></textarea><br>
             <div class="bbcodes">
-                bbcodes should be here
+                <input type="file" name="file">
             </div>
             <input type = "submit" value="Send" class="sendbtn">
         </form>

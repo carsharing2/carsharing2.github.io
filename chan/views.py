@@ -8,7 +8,7 @@ import datetime
 def index(request, page=0):
     t_on_page = 3
     page = int(page)
-    posts = Post.objects.filter(parent_thread = None)
+    posts = Post.objects.filter(parent_thread=None)
     if posts.count() <= t_on_page * page:
         raise Http404('Page does not exist')
 
@@ -17,11 +17,11 @@ def index(request, page=0):
     
     for p in posts:
         try:
-            p.last_post_id = Post.objects.filter(parent_thread = p.post_id, sage = False).last().post_id
+            p.last_post_id = Post.objects.filter(parent_thread=p.post_id, sage=False).last().post_id
         except AttributeError: #no posts in thread
             p.last_post_id = p.post_id
 
-    posts = sorted(list(posts), key = lambda p: p.last_post_id, reverse = True) #sort threads py last post id
+    posts = sorted(list(posts), key=lambda p: p.last_post_id, reverse=True) #sort threads py last post id
 
     data = []
     for p in posts[page*t_on_page:page*t_on_page + t_on_page]:
@@ -73,11 +73,12 @@ def create(request, thread_id=None):
             sage = sage, 
             ip = ip,
             parent_thread = thread_id,
+            file = request.FILES['file'],
             )
         message = 'Post send'
     
     if thread_id is None: #If user created new thread.
-        threads = Post.objects.filter(parent_thread = None)
+        threads = Post.objects.filter(parent_thread=None)
         if threads.count() > 10: #Maximum number of threads on the board.
             last_thread_id = threads.order_by('post_id').first().post_id
             threads.order_by('post_id').first().delete() #delete last thread
@@ -88,6 +89,6 @@ def create(request, thread_id=None):
     
 
 def thread(request, thread_id):
-    op_post = get_object_or_404(Post, post_id = thread_id, parent_thread = None)
-    posts = Post.objects.filter(parent_thread = (thread_id))
+    op_post = get_object_or_404(Post, post_id=thread_id, parent_thread=None)
+    posts = Post.objects.filter(parent_thread=(thread_id))
     return render(request, 'chan/thread.html', {'op_post': op_post, 'posts': posts})

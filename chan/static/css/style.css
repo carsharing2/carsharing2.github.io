@@ -6,6 +6,7 @@ a {text-decoration: none; }
     padding-left: 40px; 
     border: solid 1px black; 
     margin-left: 20px;
+    min-height: 250px;
 }
 
 .post { 
@@ -13,7 +14,19 @@ a {text-decoration: none; }
     padding: 5px;
     padding-left: 20px; 
     border: solid 1px black; 
-    margin: 5px 500px 0px 20px;
+    margin: 5px 0px 0px 20px;
+    width: 700px;
+    min-height: 250px;
+}
+
+.spoiler {
+    display: inline;
+    background-color: gray;
+    color: grey;
+}
+
+.spoiler:hover {
+    color: black;
 }
 
 .popup { 
@@ -61,6 +74,22 @@ a {text-decoration: none; }
     border-radius: 10px;
 }
 
-.bbcodes {
+.filefield {
     float: left;
+}
+
+.postimg {
+    width: 200px;;
+    max-height: 100%;
+}
+
+.leftblock{
+    float: left;
+    width: 200px;
+    min-height: 250px;
+}
+
+.rightblock {
+    float: left;
+    width: 300px;
 }

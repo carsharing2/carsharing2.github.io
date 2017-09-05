@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.utils import timezone
 from .models import Post, Users_base
-
 from math import ceil
 import datetime
+import re
 
 def index(request, page=0):
     t_on_page = 3
@@ -63,11 +63,18 @@ def create(request, thread_id=None):
         user.last_post_date = timezone.now()
         user.save()
     
-
+    post_message = request.POST['message']
+    post_message = re.sub('\[b(:.*)?\](.*?)\[\/b\1?\]', '<strong>\\2</strong>', post_message)
+    post_message = re.sub('\[i(:.*)?\](.*?)\[\/i\1?\]', '<em>\\2</em>', post_message)
+    post_message = re.sub('\[u(:.*)?\](.*?)\[\/u\1?\]', '<u>\\2</u>', post_message)
+    post_message = re.sub('\[s(:.*)?\](.*?)\[\/s\1?\]', '<div class="spoiler">\\2</div>', post_message)
+    post_message = post_message.replace('&', '&amp;')
+    post_message = post_message.replace('<', '&lt;')
+    post_message = post_message.replace('>', '&gt;')
 
     if allow_post:
         post_data = Post.objects.create(
-            message = request.POST['message'],
+            message = post_message,
             mail = request.POST['mail'],
             date = timezone.now(),
             sage = True if 'sage' in request.POST else False, 

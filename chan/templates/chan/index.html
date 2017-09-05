@@ -42,12 +42,12 @@
 <div class="reply">
     <div class="sendform">
         <h3>Create your own thread</h3>
-        <form action="{% url 'create' %}" method="post">
+        <form action="{% url 'create' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input placeholder = "Email" name = "mail" class ="mailfield">
             <br>
             <textarea name = "message" rows = 8 placeholder = "Your message" class="mfield"></textarea><br>
-            <div class="bbcodes">
+            <div class="filefield">
                 <input type="file" name="file">
             </div>
             <input type = "submit" value="Send" class="sendbtn">

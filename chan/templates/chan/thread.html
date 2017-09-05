@@ -1,3 +1,5 @@
+{% load bbcode_tags %}
+{% bbcode entry.bbcode_content %}
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +20,7 @@
 <div class="popup"></div>
 <div class = "oppost">
     <b>#{{ op_post.post_id }} </b> {{ op_post.date|date:"d.m.Y G:i:s" }} {{ op_post.ip }}<br />
-    {{ op_post.message }}
+    {{ op_post.message|bbcode }}
 </div>
 <hr />
 
@@ -32,7 +34,7 @@
         SAGE<br /> 
     {% endif %}   
     <b>#{{ post.post_id}} </b> {{ post.date|date:"d.m.Y G:i:s" }} {{ post.ip }}<br />
-    {{ post.message }}
+    {{ post.message|bbcode|safe }}
     {% if post.file %}
         <img src="/{{ post.file }}" width="200" height="200">
     {% endif %}

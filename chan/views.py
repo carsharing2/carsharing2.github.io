@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.utils import timezone
 from .models import Post, Users_base
+
 from math import ceil
 import datetime
 
@@ -39,8 +40,6 @@ def create(request, thread_id=None):
     else:
         ip = request.META.get('REMOTE_ADDR')
 
-    sage = True if 'sage' in request.POST else False
-
 
     try: 
         user = Users_base.objects.get(ip=ip)
@@ -55,27 +54,28 @@ def create(request, thread_id=None):
 
     if user.is_banned():
         allow_post = False
-        message = 'Ban: {}; expires: {}'.format(user.ban_reason, user.ban_expire.ctime())
+        result_message = 'Ban: {}; expires: {}'.format(user.ban_reason, user.ban_expire.ctime())
     elif (timezone.now() - user.last_post_date < datetime.timedelta(seconds = 5)) and not new_user:
         allow_post = False
-        message = 'You post too fast'
+        result_message = 'You post too fast'
     else:
         allow_post = True
         user.last_post_date = timezone.now()
         user.save()
     
 
+
     if allow_post:
         post_data = Post.objects.create(
             message = request.POST['message'],
             mail = request.POST['mail'],
             date = timezone.now(),
-            sage = sage, 
+            sage = True if 'sage' in request.POST else False, 
             ip = ip,
             parent_thread = thread_id,
-            file = request.FILES['file'],
+            file = request.FILES['file'] if 'file' in request.FILES else None,
             )
-        message = 'Post send'
+        result_message = 'Post send'
     
     if thread_id is None: #If user created new thread.
         threads = Post.objects.filter(parent_thread=None)
@@ -85,7 +85,7 @@ def create(request, thread_id=None):
             Post.objects.filter(parent_thread = last_thread_id).delete() #delete posts in last thread
 
     
-    return render(request, 'chan/message.html', {'message': message})
+    return render(request, 'chan/message.html', {'message': result_message})
     
 
 def thread(request, thread_id):

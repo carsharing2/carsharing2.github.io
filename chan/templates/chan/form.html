@@ -1,0 +1,16 @@
+    {% csrf_token %}
+    <input placeholder = "Email" name = "mail" class ="mailfield">
+    <input type = "checkbox" name = "sage" value="sage" class="sagebtn">sage
+    <br>
+    <textarea name = "message" rows = 8 placeholder = "Your message" class="mfield" id="mfield"></textarea>
+    <br>
+    <div class="leftform">
+        <div class="bbcodes">                  
+            <input id="boldBtn" type="button" value="B">
+            <input id="iBtn" type="button" value="I">
+            <input id="ulineBtn" type="button" value="U">
+            <input id="spBtn" type="button" value="SPOILER">
+        </div>
+            <input type="file" name="file" class="filebtn" accept="image/*">
+    </div>
+    <input type = "submit" value="Send" class="sendbtn">

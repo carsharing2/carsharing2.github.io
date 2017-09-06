@@ -18,7 +18,7 @@
 <div class="popup"></div>
 <div class="oppost"> 
     <a name="{{ op_post.post_id }}"></a>
-    <b>#{{ op_post.post_id }} </b> {{ op_post.date|date:"d.m.Y G:i:s" }} {{ op_post.ip }}<br>
+    #<a class="idlink">{{ op_post.post_id }}</a> {{ op_post.date|date:"d.m.Y G:i:s" }} {{ op_post.ip }}<br>
     {% if op_post.media %}
     <div class="leftblock">
         <img src="/{{ op_post.media }}" class="postimg">
@@ -27,20 +27,29 @@
     <div class="rightblock">
         {{ op_post.message|safe }}
     </div>
+    <br>
+    {% if op_post.replies %}
+        <div class="replies">
+            Replies: 
+            {% for num in op_post.replies %}
+                <a href="#{{ num }}">#{{ num }}</a>
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>
 
 
 {% for post in posts %}
 <div class = "post">
-    <a name="{{ post.post_id}}"></a>
 
     {% if post.mail %}
         {{ post.mail}}<br /> 
     {% endif %}
     {% if post.sage %}
         SAGE<br /> 
-    {% endif %}   
-    <b>#{{ post.post_id}} </b> {{ post.date|date:"d.m.Y G:i:s" }} {{ post.ip }}<br />
+    {% endif %}
+    <a name="{{ post.post_id}}"></a>   
+    #<a class="idlink">{{ post.post_id}}</a> {{ post.date|date:"d.m.Y G:i:s" }} {{ post.ip }}<br />
     
     {% if post.media %}
     <div class="leftblock">
@@ -51,6 +60,15 @@
     <div class="rightblock">
         {{ post.message|safe }}
     </div>
+    <br>
+    {% if post.replies %}
+        <div class="replies">
+            Replies: 
+            {% for num in post.replies %}
+                <a href="#{{ num }}">#{{ num }}</a>
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>
 {% endfor %}
 <p><a href="{% url 'index'%}">Back</a></p>
@@ -59,22 +77,7 @@
     <div class="sendform">
         <h3>Post in thread</h3>
         <form action="{% url 'create_post' thread_id=op_post.post_id %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input placeholder = "Email" name = "mail" class ="mailfield">
-            <input type = "checkbox" name = "sage" value="sage" class="sagebtn">sage
-            <br>
-            <textarea name = "message" rows = 8 placeholder = "Your message" class="mfield" id="mfield"></textarea>
-            <br>
-            <div class="leftform">
-                <div class="bbcodes">                  
-                    <input id="boldBtn" type="button" value="B">
-                    <input id="iBtn" type="button" value="I">
-                    <input id="ulineBtn" type="button" value="U">
-                    <input id="spBtn" type="button" value="SPOILER">
-                </div>
-                    <input type="file" name="file" class="filebtn">
-            </div>
-            <input type = "submit" value="Send" class="sendbtn">
+            {% include "chan/form.html" %}
         </form>
     </div>
 </div>

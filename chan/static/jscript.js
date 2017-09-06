@@ -30,21 +30,33 @@ function popup(text){
 $("input[type='submit']").click(function() { return false; }); //disable page reload
 */
 
-$(document).ready(function() {   
+$(document).ready(function() {
+    //BBCODES   
     $("#boldBtn").click(function () {
         var text = $("#mfield").val();
-        $("#mfield").val(text + "[b][/b]");
+        $("#mfield").val( text + "[b][/b]" );
+        $("#mfield").focus();
     });
     $("#iBtn").click(function () {
         var text = $("#mfield").val();
-        $("#mfield").val(text + "[i][/i]");
+        $("#mfield").val( text + "[i][/i]" );
+        $("#mfield").focus();
     });
     $("#ulineBtn").click(function () {
         var text = $("#mfield").val();
-        $("#mfield").val(text + "[u][/u]");
+        $("#mfield").val( text + "[u][/u]" );
+        $("#mfield").focus();
     });
     $("#spBtn").click(function () {
         var text = $("#mfield").val();
-        $("#mfield").val(text + "[s][/s]");
+        $("#mfield").val( text + "[s][/s]"  );
+        $("#mfield").focus();
+    });
+
+    //POST ID LINK CLICK
+    $(".idlink").click(function () {
+        var text = $("#mfield").val();
+        $("#mfield").val(text + ">>" + $(this).text());
+        $("#mfield").focus();
     });
 });

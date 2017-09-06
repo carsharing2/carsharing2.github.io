@@ -130,3 +130,13 @@ a {
     color: rgb(163, 11, 67);
     text-decoration: underline;
 }
+
+.idlink {
+    font-weight: bold;
+    color: black;
+}
+
+.replies {
+    font-size: 0.8em;
+    margin-top: 15px;
+}

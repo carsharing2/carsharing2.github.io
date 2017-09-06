@@ -6,7 +6,7 @@ class Post(models.Model):
     date = models.DateTimeField('Post date')
     sage = models.BooleanField('Sage')
     parent_thread = models.PositiveIntegerField('Parent', blank=True, null=True)
-    ip = models.CharField(max_length=20, blank=True, default=-1)
+    ip = models.GenericIPAddressField()
     post_id = models.AutoField(primary_key=True)
     media = models.FileField(upload_to='uploads/', blank=True, null=True)
     replies = models.CharField(max_length=1000, blank=True)
@@ -16,7 +16,7 @@ class Post(models.Model):
         return self.message
 
 class Users_base(models.Model):
-    ip = models.CharField(max_length=20, unique=True)
+    ip = models.GenericIPAddressField()
     last_post_date = models.DateTimeField('Last post date')
     ban_reason = models.CharField(max_length=500, blank=True, null=True)
     ban_expire = models.DateTimeField('Expire date', blank=True, null=True)

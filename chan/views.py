@@ -71,7 +71,12 @@ def create(request, thread_id=None):
             media = request.FILES['file'] if 'file' in request.FILES else None,
             )
         new_post.save()
-        #print(new_post.post_id) DEAL WITH IT LATER!!
+
+        for link in utils.get_replies_list(post_message):
+           p = Post.objects.get(post_id=link)
+           p.replies += str(new_post.post_id) + ';'
+           p.save()
+
         result_message = 'Post send'
     
     if thread_id is None: #If user created new thread.
@@ -88,5 +93,9 @@ def create(request, thread_id=None):
 
 def thread(request, thread_id):
     op_post = get_object_or_404(Post, post_id=thread_id, parent_thread=None)
+    op_post.replies = op_post.replies.split(';')[:-1]
+
     posts = Post.objects.filter(parent_thread=(thread_id))
+    for p in posts:
+        p.replies = p.replies.split(';')[:-1]
     return render(request, 'chan/thread.html', {'op_post': op_post, 'posts': posts})

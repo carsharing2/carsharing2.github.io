@@ -21,9 +21,8 @@ def post_handler(text):
     
 
     #Reply links
-    text = re.sub('&gt;&gt;(\d+)', '<a href="#\\1" class="replto">>>\\1</a>', text)
-    
+    text = re.sub('&gt;&gt;(\d+)', '<a href="#\\1" class="replto">>>\\1</a>', text) 
     return text
 
 def get_replies_list(text):
-    return re.findall('>>(\d+)', text)
+    return list(map(lambda x: int(x), re.findall('>>(\d+)', text)))

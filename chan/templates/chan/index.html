@@ -14,27 +14,44 @@
 <div class="popup"></div>
 <p>Welcome</p>
 
-{% for post in posts %}
-<div class="oppost">
-    {% if post.op.mail %}
-        {{ post.op.mail}} <br />
-    {% endif %}
 
-    {% if post.op.sage %}
-        SAGE <br />
-    {% endif %}
-    <b>#{{ post.op.post_id}} </b> {{ post.op.date }} {{ post.op.ip }}<br />
-    {{ post.op.message }}<br />
-    <p><a href="{% url 'thread' thread_id=post.op.post_id %}">Go to thread</a></p>
+{% for post in posts %}
+<div class="oppost"> 
+    <b>#{{ post.op.post_id }} </b> {{ post.op.date|date:"d.m.Y G:i:s" }} {{ post.op.ip }}<br>
+    <div class="leftblock">
+        {% if post.op.media %}
+            <img src="/{{ post.op.media }}" class="postimg">
+        {% endif %}
+        <a href="{% url 'thread' thread_id=post.op.post_id %}">Go to thread</a>
+    </div>
+    <div class="rightblock">
+        {{ post.op.message|safe }}
+    </div>
 </div>
 
     {% for t_box in post.related_posts %}
-    <div class="post">
-        {{ t_box.message }}
+    <div class = "post">
+        {% if t_box.mail %}
+            {{ t_box.mail}}<br /> 
+        {% endif %}
+        {% if t_box.sage %}
+            SAGE<br /> 
+        {% endif %}   
+        <b>#{{ t_box.post_id}} </b> {{ t_box.date|date:"d.m.Y G:i:s" }} {{ t_box.ip }}<br />
+        
+        {% if t_box.media %}
+        <div class="leftblock">
+            <img src="/{{ t_box.media }}"  class="postimg">
+        </div>
+        {% endif %}
+        
+        <div class="rightblock">
+            {{ t_box.message|safe }}
+        </div>
     </div>
     {% endfor %}   
 {% endfor %}
-
+<br>
 {% for p in pages %}
     <a href="{% url 'index_page' page=p %}">[{{ p }}] </a>
 {% endfor %}    
@@ -47,10 +64,16 @@
             <input placeholder = "Email" name = "mail" class ="mailfield">
             <br>
             <textarea name = "message" rows = 8 placeholder = "Your message" class="mfield"></textarea><br>
-            <div class="filefield">
-                <input type="file" name="file">
-            </div>
-            <input type = "submit" value="Send" class="sendbtn">
+            <div class="leftform">
+                    <div class="bbcodes">                  
+                        <input id="boldBtn" type="button" value="B">
+                        <input id="iBtn" type="button" value="I">
+                        <input id="ulineBtn" type="button" value="U">
+                        <input id="spBtn" type="button" value="SPOILER">
+                    </div>
+                        <input type="file" name="file" class="filebtn">
+                </div>
+                <input type = "submit" value="Send" class="sendbtn">
         </form>
     </div>
 </div>

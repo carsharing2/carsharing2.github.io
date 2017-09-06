@@ -29,3 +29,22 @@ function popup(text){
 
 $("input[type='submit']").click(function() { return false; }); //disable page reload
 */
+
+$(document).ready(function() {   
+    $("#boldBtn").click(function () {
+        var text = $("#mfield").val();
+        $("#mfield").val(text + "[b][/b]");
+    });
+    $("#iBtn").click(function () {
+        var text = $("#mfield").val();
+        $("#mfield").val(text + "[i][/i]");
+    });
+    $("#ulineBtn").click(function () {
+        var text = $("#mfield").val();
+        $("#mfield").val(text + "[u][/u]");
+    });
+    $("#spBtn").click(function () {
+        var text = $("#mfield").val();
+        $("#mfield").val(text + "[s][/s]");
+    });
+});

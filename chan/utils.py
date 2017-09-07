@@ -25,4 +25,4 @@ def post_handler(text):
     return text
 
 def get_replies_list(text):
-    return list(map(lambda x: int(x), re.findall('>>(\d+)', text)))
+    return list(map(int, re.findall('>>(\d+)', text)))

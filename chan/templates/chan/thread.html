@@ -16,6 +16,10 @@
 {% load tz %}
 
 <div class="popup"></div>
+<div id="fullscreen" class="modal">
+    <img class="modal-content" id="img01">
+  </div>
+
 <div class="oppost"> 
     <a name="{{ op_post.post_id }}"></a>
     #<a class="idlink">{{ op_post.post_id }}</a> {{ op_post.date|date:"d.m.Y G:i:s" }} {{ op_post.ip }}<br>
@@ -62,6 +66,7 @@
     </div>
     <br>
     {% if post.replies %}
+        <div class="clear"></div>
         <div class="replies">
             Replies: 
             {% for num in post.replies %}

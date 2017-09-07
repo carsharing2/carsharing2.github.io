@@ -90,6 +90,7 @@ a {
 
 
 .postimg {
+    cursor: pointer;
     width: 150px;
 }
 
@@ -132,6 +133,7 @@ a {
 }
 
 .idlink {
+    cursor: pointer;
     font-weight: bold;
     color: black;
 }
@@ -139,4 +141,37 @@ a {
 .replies {
     font-size: 0.8em;
     margin-top: 15px;
+}
+
+.clear {
+    clear: left; 
+   }
+
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 998; 
+    padding-top: 100px; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+}
+
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 500px;
+    border: 10px solid grey;
+    border-radius: 10px;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+    .modal-content {
+        width: 100%;
+    }
 }

@@ -8,6 +8,7 @@ import datetime
 
 def index(request, page=0):
     threads_on_page = 3
+    bump_limit = 10
     page = int(page)
     posts = Post.objects.filter(parent_thread=None)
     if posts.count() <= threads_on_page * page:
@@ -72,19 +73,20 @@ def create(request, thread_id=None):
             )
         new_post.save()
 
-        for link in utils.get_replies_list(post_message):
-           p = Post.objects.get(post_id=link)
+        for num in utils.get_replies_list(post_message):
+           p = Post.objects.get(post_id=num)
            p.replies += str(new_post.post_id) + ';'
            p.save()
 
         result_message = 'Post send'
     
-    if thread_id is None: #If user created new thread.
+    if thread_id is None and allow_post: #If user created new thread.
         threads = Post.objects.filter(parent_thread=None)
         if threads.count() > 10: #Maximum number of threads on the board.
             last_thread_id = threads.order_by('post_id').first().post_id
             threads.order_by('post_id').first().delete() #delete last thread
             Post.objects.filter(parent_thread=last_thread_id).delete() #delete posts in last thread
+        return redirect('thread', new_post.post_id)
             
 
     

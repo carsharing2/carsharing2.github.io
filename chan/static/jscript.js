@@ -53,10 +53,27 @@ $(document).ready(function() {
         $("#mfield").focus();
     });
 
-    //POST ID LINK CLICK
+    //Post id link click
     $(".idlink").click(function () {
         var text = $("#mfield").val();
         $("#mfield").val(text + ">>" + $(this).text());
         $("#mfield").focus();
     });
+
+    //Full image
+    $('.postimg').click(function() {
+        $('#fullscreen').show();
+        $('#img01').attr('src', $(this).attr('src'));
+    });
+    
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('fullscreen')) {
+           $('#fullscreen').hide();
+        }
+    }
+    
+    $('#fullscreen').click(function() {
+        $('#fullscreen').hide();
+    });
 });
+

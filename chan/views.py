@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from django.utils import timezone
 from .models import Post, Users_base
 from chan import utils
@@ -86,18 +86,21 @@ def create(request, thread_id=None):
             last_thread_id = threads.order_by('post_id').first().post_id
             threads.order_by('post_id').first().delete() #delete last thread
             Post.objects.filter(parent_thread=last_thread_id).delete() #delete posts in last thread
-        return redirect('thread', new_post.post_id)
+        result_message = 'Thread is created'
             
-
-    
-    return render(request, 'chan/message.html', {'message': result_message})
+    return JsonResponse({'message': result_message})
     
 
-def thread(request, thread_id):
+def thread(request, thread_id, render_posts_only=False):
     op_post = get_object_or_404(Post, post_id=thread_id, parent_thread=None)
     op_post.replies = op_post.replies.split(';')[:-1]
 
     posts = Post.objects.filter(parent_thread=(thread_id))
     for p in posts:
         p.replies = p.replies.split(';')[:-1]
-    return render(request, 'chan/thread.html', {'op_post': op_post, 'posts': posts})
+
+    if render_posts_only:
+        template_name = 'posts'
+    else:
+        template_name = 'thread'
+    return render(request, 'chan/{}.html'.format(template_name), {'op_post': op_post, 'posts': posts})

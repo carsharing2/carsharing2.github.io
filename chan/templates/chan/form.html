@@ -13,4 +13,4 @@
         </div>
             <input type="file" name="file" class="filebtn" accept="image/*">
     </div>
-    <input type = "submit" value="Send" class="sendbtn">
+    <a onclick="sendPost('{{ csrf_token }}');" class="sendbtn">Send</a>

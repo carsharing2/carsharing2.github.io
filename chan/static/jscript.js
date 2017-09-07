@@ -4,33 +4,41 @@ function popup(text){
     setTimeout ("$('.popup').hide('drop');", 2500);
 }
 
-/*function sendPost(threadId, token){   
-    $.ajax({
-        url : '/createpost/',
-        type : 'POST',
-        data : {
-            message: function() { return $("textarea[name=message]").val(); },
-            mail: function() { return $("input[name=mail]").val(); },
-            sage: function() { 
-                if ($("input[name=sage]").prop('checked')) {
-                    return 1;
-                } else {
-                    return 0;
-                } 
-            },
-            csrfmiddlewaretoken: token,
-            thread_id: threadId,
-        },
-        success : function(data){
-            popup(data['message']);
-        },
-    });
+function refreshThread() {
+    
+}
+
+var files;
+$('input[type=file]').change(function(){
+    files = this.files;
+});
+
+function sendPost(token){
+    var form = document.forms.namedItem("postform");
+    var formData = new FormData(form);
+    var request = new XMLHttpRequest();
+
+    request.open('POST', 'createpost/');
+    request.onreadystatechange = function() {
+        if (request.readyState == 4) {
+           if(request.status == 200) {
+             popup(JSON.parse(request.responseText)['message']);
+             $.get( "getposts/", function( data ) {
+                $( "#container" ).html( data );
+              });      
+      };
+    }};
+    request.send(formData);   
 };
 
-$("input[type='submit']").click(function() { return false; }); //disable page reload
-*/
-
 $(document).ready(function() {
+    $("#refreshBtn").click(function () {
+        $.get( "getposts/", function( data ) {
+            $( "#container" ).html( data );
+            popup( 'Page is refreshed' );
+          });
+    });
+
     //BBCODES   
     $("#boldBtn").click(function () {
         var text = $("#mfield").val();

@@ -62,7 +62,7 @@
 <div class="reply">
     <div class="sendform">
         <h3>Create your own thread</h3>
-        <form action="{% url 'create' %}" method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" name="postform" id="postform">
             {% include "chan/form.html" %}
         </form>
     </div>

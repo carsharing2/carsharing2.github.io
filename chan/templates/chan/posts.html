@@ -1,0 +1,56 @@
+<div class="oppost"> 
+    <a name="{{ op_post.post_id }}"></a>
+    #<a class="idlink">{{ op_post.post_id }}</a> {{ op_post.date|date:"d.m.Y G:i:s" }} {{ op_post.ip }}<br>
+    {% if op_post.media %}
+    <div class="leftblock">
+        <img src="/{{ op_post.media }}" class="postimg">
+    </div>
+    {% endif %}
+    <div class="rightblock">
+        {{ op_post.message|safe }}
+    </div>
+    <br>
+    {% if op_post.replies %}
+        <div class="replies">
+            Replies: 
+            {% for num in op_post.replies %}
+                <a href="#{{ num }}">#{{ num }}</a>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+
+{% for post in posts %}
+<div class = "post">
+
+    {% if post.mail %}
+        {{ post.mail}}<br /> 
+    {% endif %}
+    {% if post.sage %}
+        SAGE<br /> 
+    {% endif %}
+    <a name="{{ post.post_id}}"></a>   
+    #<a class="idlink">{{ post.post_id}}</a> {{ post.date|date:"d.m.Y G:i:s" }} {{ post.ip }}<br />
+    
+    {% if post.media %}
+    <div class="leftblock">
+        <img src="/{{ post.media }}"  class="postimg">
+    </div>
+    {% endif %}
+    
+    <div class="rightblock">
+        {{ post.message|safe }}
+    </div>
+    <br>
+    {% if post.replies %}
+        <div class="clear"></div>
+        <div class="replies">
+            Replies: 
+            {% for num in post.replies %}
+                <a href="#{{ num }}">#{{ num }}</a>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endfor %}

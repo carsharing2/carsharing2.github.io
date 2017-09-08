@@ -88,7 +88,7 @@ def create(request, thread_id=None):
             Post.objects.filter(parent_thread=last_thread_id).delete() #delete posts in last thread
         result_message = 'Thread is created'
             
-    return JsonResponse({'message': result_message})
+    return JsonResponse({'message': result_message, 'allow_post': allow_post})
     
 
 def thread(request, thread_id, render_posts_only=False):

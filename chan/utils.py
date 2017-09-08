@@ -17,7 +17,7 @@ def post_handler(text):
     text = re.sub('\[b(:.*)?\](.*?)\[\/b\1?\]', '<strong>\\2</strong>', text)
     text = re.sub('\[i(:.*)?\](.*?)\[\/i\1?\]', '<em>\\2</em>', text)
     text = re.sub('\[u(:.*)?\](.*?)\[\/u\1?\]', '<u>\\2</u>', text)
-    text = re.sub('\[s(:.*)?\](.*?)\[\/s\1?\]', '<div class="spoiler">\\2</div>', text)
+    text = re.sub('\[s(:.*)?\](.*?)\[\/s\1?\]', '<span class="spoiler">\\2</span>', text)
     
 
     #Reply links

@@ -59,7 +59,10 @@ def create(request, thread_id=None):
         user.save()
     
     post_message = request.POST['message']
-    
+    media = request.FILES['file'] if 'file' in request.FILES else None
+    if media and 'image' not in media.content_type:
+        allow_post = False
+        result_message = 'Inappropriate content type (images only)'
 
     if allow_post:
         new_post = Post(
@@ -69,8 +72,8 @@ def create(request, thread_id=None):
             sage = True if 'sage' in request.POST else False, 
             ip = ip,
             parent_thread = thread_id,
-            media = request.FILES['file'] if 'file' in request.FILES else None,
-            )
+            media = media,
+        )
         new_post.save()
 
         for num in utils.get_replies_list(post_message):

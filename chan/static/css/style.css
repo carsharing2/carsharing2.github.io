@@ -160,6 +160,7 @@ a {
 
 
 .modal-content {
+    background-color: grey;
     margin: auto;
     display: block;
     width: 80%;

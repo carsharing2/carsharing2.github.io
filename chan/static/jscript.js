@@ -12,6 +12,17 @@ function refresh() { //Refresh threads
       });  
 }
 
+function insertBbcode(startTag, closeTag) {
+    var textArea = $("#mfield");
+    var len = textArea.val().length;
+    var start = textArea[0].selectionStart;
+    var end = textArea[0].selectionEnd;
+    var selectedText = textArea.val().substring(start, end);
+    var replacement = startTag + selectedText + closeTag;
+    textArea.val(textArea.val().substring(0, start) + replacement + textArea.val().substring(end, len));
+    textArea.focus();
+}
+
 function bindButtonClick() {
     //Post id link click
     $(".idlink").click(function () {
@@ -37,7 +48,7 @@ function bindButtonClick() {
     });
 }
 
-function sendPost(token){
+function sendPost(){
     var files = $('input[type=file]').files;    
     var form = document.forms.namedItem("postform");
     var formData = new FormData(form);
@@ -46,14 +57,16 @@ function sendPost(token){
     request.open('POST', 'createpost/');
     request.onreadystatechange = function() {
         if (request.readyState == 4) {
-           if(request.status == 200) {
-             popup(JSON.parse(request.responseText)['message']);
-             if(JSON.parse(request.responseText)['allow_post']) { //Only if post is sent
-                refresh(); 
-                $("#mfield").val( '' );
-             }
-               
-      };
+            if(request.status == 200) {
+                popup(JSON.parse(request.responseText)['message']);
+                if(JSON.parse(request.responseText)['allow_post']) { //Only if post is sent
+                    refresh(); 
+                    $("#mfield").val( '' );
+                    $("input[type=file]").replaceWith( $("input[type=file]").val('').clone(true)); //Reset file field after post
+                }   
+            } else {
+                popup( 'Unknown error: status code ' + request.status);
+            }
     }};
     request.send(formData);   
 };
@@ -69,25 +82,17 @@ $(document).ready(function() {
     bindButtonClick();
 
      //BBCODES   
-     $("#boldBtn").click(function () {
-        var text = $("#mfield").val();
-        $("#mfield").val( text + "[b][/b]" );
-        $("#mfield").focus();
+    $("#boldBtn").click(function () {
+        insertBbcode('[b]', '[/b]');
     });
     $("#iBtn").click(function () {
-        var text = $("#mfield").val();
-        $("#mfield").val( text + "[i][/i]" );
-        $("#mfield").focus();
+        insertBbcode('[i]', '[/i]');
     });
     $("#ulineBtn").click(function () {
-        var text = $("#mfield").val();
-        $("#mfield").val( text + "[u][/u]" );
-        $("#mfield").focus();
+        insertBbcode('[u]', '[/u]');
     });
     $("#spBtn").click(function () {
-        var text = $("#mfield").val();
-        $("#mfield").val( text + "[s][/s]"  );
-        $("#mfield").focus();
+        insertBbcode('[s]', '[/s]');
     });
 });
 

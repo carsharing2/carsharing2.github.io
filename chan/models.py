@@ -4,7 +4,6 @@ class Post(models.Model):
     message = models.CharField(max_length=1000)
     mail = models.CharField(max_length=100, blank=True, default='')
     date = models.DateTimeField('Post date')
-    bump_date = models.DateTimeField('Bump date', blank=True, null=True)
     sage = models.BooleanField('Sage')
     parent_thread = models.PositiveIntegerField('Parent', blank=True, null=True)
     ip = models.GenericIPAddressField()

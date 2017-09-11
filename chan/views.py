@@ -8,25 +8,30 @@ import datetime
 
 def index(request, page=0):
     threads_on_page = 3
-    bump_limit = 10
+    bump_limit = 5
     page = int(page)
-    posts = Post.objects.filter(parent_thread=None)
-    if posts.count() <= threads_on_page * page:
+    op_posts = Post.objects.filter(parent_thread=None)
+    if op_posts.count() <= threads_on_page * page:
         raise Http404('Page does not exist')
 
-    pages_total_count = ceil(posts.count() / threads_on_page)
+    pages_total_count = ceil(op_posts.count() / threads_on_page)
     pages_total = list(range(pages_total_count)) #List of pages numbers
     
-    for p in posts:
+    for p in op_posts:
         try:
-            p.last_post_id = Post.objects.filter(parent_thread=p.post_id, sage=False).last().post_id
+            s = Post.objects.filter(parent_thread=p.post_id, sage=False)[:bump_limit]
+            if s.count()-1 <= 0:
+                p.last_post_id = p.post_id
+            else:                  
+                s = s[s.count()-1]
+                p.last_post_id = s.post_id
         except AttributeError: #No posts in thread, so last post date is date of OP post
             p.last_post_id = p.post_id
 
-    posts = sorted(list(posts), key=lambda p: p.last_post_id, reverse=True) #Sort threads py last post id
+    op_posts = sorted(list(op_posts), key=lambda p: p.last_post_id, reverse=True) #Sort threads py last post id
 
     data = []
-    for p in posts[page*threads_on_page:page*threads_on_page + threads_on_page]:
+    for p in op_posts[page*threads_on_page:page*threads_on_page + threads_on_page]:
         data.append({
             'op': p,
             'related_posts': Post.objects.filter(parent_thread=p.post_id).order_by('-post_id')[:3:-1],

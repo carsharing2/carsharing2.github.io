@@ -59,6 +59,7 @@ def create(request, thread_id=None):
         user.save()
     
     post_message = request.POST['message']
+    sage = True if 'sage' in request.POST else False
     media = request.FILES['file'] if 'file' in request.FILES else None
     if media and 'image' not in media.content_type:
         allow_post = False
@@ -69,7 +70,7 @@ def create(request, thread_id=None):
             message = utils.post_handler(post_message),
             mail = request.POST['mail'],
             date = timezone.now(),
-            sage = True if 'sage' in request.POST else False, 
+            sage = sage, 
             ip = ip,
             parent_thread = thread_id,
             media = media,

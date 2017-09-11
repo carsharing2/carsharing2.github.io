@@ -4,13 +4,13 @@ class Post(models.Model):
     message = models.CharField(max_length=1000)
     mail = models.CharField(max_length=100, blank=True, default='')
     date = models.DateTimeField('Post date')
+    bump_date = models.DateTimeField('Bump date', blank=True, null=True)
     sage = models.BooleanField('Sage')
     parent_thread = models.PositiveIntegerField('Parent', blank=True, null=True)
     ip = models.GenericIPAddressField()
     post_id = models.AutoField(primary_key=True)
     media = models.FileField(upload_to='uploads/', blank=True, null=True)
     replies = models.CharField(max_length=1000, blank=True)
-
 
     def __str__(self):
         return self.message

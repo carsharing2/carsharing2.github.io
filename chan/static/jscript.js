@@ -53,22 +53,30 @@ function sendPost(){
     var form = document.forms.namedItem("postform");
     var formData = new FormData(form);
     var request = new XMLHttpRequest();
+    var oldText = $('.sendbtn').text();
+    request.upload.onprogress = function(event) {
+        $('.sendbtn').text(Math.round(event.loaded / event.total * 100) + '%');
+      }
 
     request.open('POST', 'createpost/');
     request.onreadystatechange = function() {
         if (request.readyState == 4) {
+            $('.sendbtn').text(oldText);
             if(request.status == 200) {
                 popup(JSON.parse(request.responseText)['message']);
                 if(JSON.parse(request.responseText)['allow_post']) { //Only if post is sent
                     refresh(); 
                     $("#mfield").val( '' );
-                    $("input[type=file]").replaceWith( $("input[type=file]").val('').clone(true)); //Reset file field after post
+                    $("input[type=file]").replaceWith(   //Reset file field after post
+                        $("input[type=file]").val('').clone(true)
+                    );
                 }   
             } else {
                 popup( 'Unknown error: status code ' + request.status);
             }
     }};
     request.send(formData);   
+    
 };
 
 $(document).ready(function() {

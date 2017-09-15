@@ -20,7 +20,7 @@ def index(request, page=0):
     for p in op_posts:
         try:
             s = Post.objects.filter(parent_thread=p.post_id, sage=False)[:bump_limit]
-            if s.count()-1 <= 0:
+            if s.count() - 1 <= 0:
                 p.last_post_id = p.post_id
             else:                  
                 s = s[s.count()-1]
@@ -69,6 +69,9 @@ def create(request, thread_id=None):
     if media and 'image' not in media.content_type:
         allow_post = False
         result_message = 'Inappropriate content type (images only)'
+    if media.size > 2000000:
+        allow_post = False
+        result_message = 'File is too big (only 2mb allowed)'
 
     if allow_post:
         new_post = Post(

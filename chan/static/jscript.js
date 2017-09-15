@@ -49,7 +49,7 @@ function bindButtonClick() {
 }
 
 function sendPost(){
-    var files = $('input[type=file]').files;    
+    var files = $('input[type=file]').files;
     var form = document.forms.namedItem("postform");
     var formData = new FormData(form);
     var request = new XMLHttpRequest();
@@ -85,6 +85,15 @@ $(document).ready(function() {
         refresh();
         var new_count = $( ".post" ).length;
         popup( new_count - old_count + " new posts ");
+    });
+
+    $('input[type=file]').bind('change', function() { //Size of file alert
+        if(this.files[0].size > 2000000) {
+            popup('Max file size is 2.0mb');
+            $("input[type=file]").replaceWith(   //Reset file field after post
+                $("input[type=file]").val('').clone(true)
+            );
+        }       
     });
 
     bindButtonClick();

@@ -16,9 +16,11 @@
         <img class="modal-content" id="img01">
 </div>
 <p>Welcome</p>
+<p style="font-size:160%;"><a href="https://github.com/lagonee/PyImBoard">GitHub</a></p>
 
 
 {% for post in posts %}
+<div id="main">
 <div class="oppost"> 
     <b>#{{ post.op.post_id }} </b> {{ post.op.date|date:"d.m.Y G:i:s" }} {{ post.op.ip }}<br>
     <div class="leftblock">
@@ -66,6 +68,7 @@
             {% include "chan/form.html" %}
         </form>
     </div>
+</div>
 </div>
 
 </body>

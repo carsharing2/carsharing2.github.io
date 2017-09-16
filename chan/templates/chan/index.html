@@ -57,8 +57,13 @@
     {% endfor %}   
 {% endfor %}
 <br>
+
 {% for p in pages %}
-    <a href="{% url 'index_page' page=p %}">[{{ p }}] </a>
+    {% if p == 0 %}
+        <a href="/">[{{ p }}] </a>
+    {% else %}
+        <a href="{% url 'index_page' page=p %}">[{{ p }}] </a>
+    {% endif %}
 {% endfor %}    
 
 <div class="reply">

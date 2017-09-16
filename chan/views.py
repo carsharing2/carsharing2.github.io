@@ -7,6 +7,7 @@ from math import ceil
 import datetime
 
 def index(request, page=0):
+
     threads_on_page = 3
     bump_limit = 5
     page = int(page)
@@ -15,7 +16,7 @@ def index(request, page=0):
         raise Http404('Page does not exist')
 
     pages_total_count = ceil(op_posts.count() / threads_on_page)
-    pages_total = list(range(pages_total_count)) #List of pages numbers
+    pages_total = list(range(pages_total_count))
     
     for p in op_posts:
         try:
@@ -60,8 +61,6 @@ def create(request, thread_id=None):
         result_message = 'You post too fast'
     else:
         allow_post = True
-        user.last_post_date = timezone.now()
-        user.save()
     
     post_message = request.POST['message']
     sage = True if 'sage' in request.POST else False
@@ -69,9 +68,12 @@ def create(request, thread_id=None):
     if media and 'image' not in media.content_type:
         allow_post = False
         result_message = 'Inappropriate content type (images only)'
-    if media.size > 2000000:
+    if media and media.size > 2000000:
         allow_post = False
         result_message = 'File is too big (only 2mb allowed)'
+    if post_message == '' and not media: #Empty messages are not allowed
+        allow_post = False
+        result_message = "You can't send an empty message"
 
     if allow_post:
         new_post = Post(
@@ -84,6 +86,9 @@ def create(request, thread_id=None):
             media = media,
         )
         new_post.save()
+
+        user.last_post_date = timezone.now()
+        user.save()
 
         for num in utils.get_replies_list(post_message):
            p = Post.objects.get(post_id=num)

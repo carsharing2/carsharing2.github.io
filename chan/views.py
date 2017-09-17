@@ -7,7 +7,6 @@ from math import ceil
 import datetime
 
 def index(request, page=0):
-
     threads_on_page = 3
     bump_limit = 5
     page = int(page)
@@ -36,7 +35,7 @@ def index(request, page=0):
         data.append({
             'op': p,
             'related_posts': Post.objects.filter(parent_thread=p.post_id).order_by('-post_id')[:3:-1],
-            })
+        })
 
     return render(request, 'chan/index.html', {'posts': data, 'pages': pages_total})
     

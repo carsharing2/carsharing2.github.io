@@ -32,6 +32,7 @@
     <div class="rightblock">
         {{ post.op.message|safe }}
     </div>
+    <div class="clear"></div>
 </div>
 
     {% for t_box in post.related_posts %}
@@ -54,6 +55,7 @@
             {{ t_box.message|safe }}
         </div>
     </div>
+    <div class="clear"></div>
     {% endfor %}   
 {% endfor %}
 <br>
